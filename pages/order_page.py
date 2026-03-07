@@ -2,11 +2,13 @@ import pytest
 import allure
 from pages.base_page import BasePage
 from locators.order_page_locators import OrderLocators
+from locators.base_page_locators import BasePageElements
 from selenium.webdriver.common.keys import Keys
+
 class OrderPage(BasePage):
     @allure.step('Открываем форму заказа')
-    def open_order_page(self, locator):
-        self.click(locator)
+    def open_order_page(self):
+        self.click(BasePageElements.order_button_top_of_page)
         self.wait_for_visibility(OrderLocators.text_who_is_the_scooter_for)
     @allure.step('Заполняем поля формы заказа')
     def fill_in_the_order_fields(self, user_name, user_surname, user_address,  user_metro_station, user_phone, user_date, rental_time, check_box):
@@ -24,4 +26,8 @@ class OrderPage(BasePage):
         self.click(OrderLocators.order_button_middle)
         self.wait_for_visibility(OrderLocators.text_would_you_like_to_place_an_order)
         self.click(OrderLocators.button_confirm_order_yes)
-        
+        self.wait_for_visibility(OrderLocators.order_confirm_text)
+    @allure.step('Подтверждение удачного заказа')
+    def order_success(self):
+        return self.wait_for_visibility(OrderLocators.order_confirm_text)    
+       

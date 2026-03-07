@@ -1,6 +1,5 @@
 import pytest
 import allure
-from locators.base_page_locators import BasePageElements
 from pages.order_page import OrderPage
 from locators.order_page_locators import OrderLocators
 class TestOrder:
@@ -11,7 +10,7 @@ class TestOrder:
     @allure.title('Проверка успешного заказа самоката при вводе валидных данных ')
     def test_success_order(self,user_name, user_surname, user_address,  user_metro_station, user_phone, user_date, rental_time, check_box, driver_firefox):
         order = OrderPage(driver_firefox)
-        order.open_order_page(BasePageElements.order_button_top_of_page)
+        order.open_order_page()
         order.fill_in_the_order_fields(user_name, user_surname, user_address,  user_metro_station, user_phone, user_date, rental_time, check_box)
-        confirm = order.wait_for_visibility(OrderLocators.order_confirm_text)
+        confirm = order.order_success()
         assert confirm.is_displayed()

@@ -1,9 +1,7 @@
 import pytest
 import allure
 from locators.base_page_locators import QuestionLocators
-from pages.base_page import BasePage
-from locators.base_page_locators import BasePageElements
-import time
+from pages.main_page import MainPage
 class TestFAQ:
     @pytest.mark.parametrize("question, answer", [
     (QuestionLocators.q_price_and_payment, QuestionLocators.a_price_and_payment),
@@ -16,12 +14,11 @@ class TestFAQ:
     (QuestionLocators.q_across_mkad, QuestionLocators.a_across_mkad)])
     @allure.title('Параметризированный тест, проверяет наличие ответа на вопросы о важном')
     def test_faq(self, question, answer, driver_firefox):
-        faq = BasePage(driver_firefox)
-        faq_area = faq.find(BasePageElements.faq_area)
-        faq.scroll(faq_area)
-        time.sleep(1)# да,знаю, что так делать не есть хорошо
-        #но через явное ожидание тесты фейлятся,притом каждый раз разные
-        #много разных вариантов перепробовал,только этот работает четко и стабильно
+        faq = MainPage(driver_firefox)
+        faq_element = faq.find_faq_area()
+        faq.scroll(faq_element)
+        faq.wait_for_visibility(question)
+        faq.wait_for_clickable(question)
         faq.click(question)
         answer_element = faq.wait_for_visibility(answer)
         assert answer_element.is_displayed()

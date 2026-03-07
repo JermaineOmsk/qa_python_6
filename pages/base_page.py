@@ -20,4 +20,11 @@ class BasePage:
     def click(self, locator):
         self.find(locator).click()
 
-  
+    @allure.step('Ожидание кликабельности элемента')
+    def wait_for_clickable(self, locator):
+        return WebDriverWait(self.driver_firefox, 10).until(expected_conditions.element_to_be_clickable(locator))
+        
+    @allure.step('Ожидание видимости url')
+    def wait_for_url(self, url):
+        return WebDriverWait(self.driver_firefox, 10).until(expected_conditions.url_to_be(url))
+    
